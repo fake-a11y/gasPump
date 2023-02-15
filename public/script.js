@@ -7,24 +7,49 @@ let inputField = document.getElementById('interface');
 let decimalField = document.getElementById('decimal');
 let currentInputNumber = '';
 let cashAmount = 0;
-let gasTankSize = 0;
+let gasTankSize = 10;
 let amountOfGas;
+<<<<<<< HEAD
 let gallonsPumped = 0;
 let intervalId;
 let cents = 0;
+//Changes color of white pill shaped div above each gas type button
+/*
+=======
 
+
+
+>>>>>>> 17f50a5e47ccc2248ae47446591f97e43d7bfa1c
 function changeColor(input, price)
 {
-    let element=document.getElementById(input);
-    if(!chosenGasBool)
-    {
-        element.style.backgroundColor = "red";
-        chosenGasBool = true;
-        chosenGasNumber = input;
-        chosenGasPrice = price;
-        console.log(chosenGasNumber, " ", price);
-    }
+    let element = document.getElementById(input);
+        if(!chosenGasBool)
+        {
+            element.style.backgroundColor = "red";
+            chosenGasBool = true;
+            chosenGasNumber = input;
+            chosenGasPrice = price;
+            console.log(chosenGasNumber, " ", price);
+        }
 }
+*/
+//Replaced code segment to change light color
+function changeColor(buttonNum, input, price){
+    let gasButton = document.getElementsByClassName("gas_buttons");
+    let light = document.getElementsByClassName("light");
+    for(let y = 0; y < gasButton.length; ++y){
+        if(buttonNum === y){
+            light[y].style.backgroundColor = "red";
+        } else {
+            light[y].style.backgroundColor = "white";
+        }
+    }
+
+    chosenGasNumber = input;
+    chosenGasPrice = price;
+    console.log(chosenGasNumber, " ", price);
+}
+
 function reset()
 {
     chosenGasBool = false;
@@ -126,30 +151,35 @@ function compute()
         inputField.innerHTML = Math.round(amountOfGas * 100)/100 + ' dollars of gas purchase';
     }
 }
-
-
+// variables for interval timer
+let gallonsPumped = 0;
+let intervalId;
+let decIntervalId;
+let decimal = 0;
 
 function showGallons() {
-   intervalId =  setInterval(incrementGallons, 1000);
-   decIntervalId = setInterval(incrementDecimal, 100);
+   intervalId =  setInterval(incrementGallons, 2000);
+   
 }
 
 function incrementGallons() {
     if (gallonsPumped <= gasTankSize) {
-        inputField.innerHTML = gallonsPumped;
+        inputField.innerHTML = `Gallons: ${gallonsPumped}`;
         gallonsPumped += 1;
+        decIntervalId = setInterval(incrementDecimal, 200);
     } else {
         clearInterval(intervalId);
+        clearInterval(decIntervalId);
         inputField.innerHTML = 'Thank you! Would you like a reciept?';
     }
 }
 
-// function incrementDecimal() {
-//     if (cents <= 10) {
-//         decimalField.innerHTML = `.${cents}`;
-//         cents += 1;
-//     } else {
-//         clearInterval(decIntervalId);
-//         decimalField.innerHTML = '';
-//     }
-// }
+function incrementDecimal() {
+     if (decimal < 10) {
+        decimalField.innerHTML = `.${decimal}`;
+        decimal += 1;
+    } else {
+        decimal = 0;
+        clearInterval(decIntervalId);
+    }
+}
